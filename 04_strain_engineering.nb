@@ -1,0 +1,756 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     28716,        748]
+NotebookOptionsPosition[     25294,        687]
+NotebookOutlinePosition[     25757,        705]
+CellTagsIndexPosition[     25714,        702]
+WindowTitle->04_strain_engineering.nb
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["04 Strain Engineering", "Title",ExpressionUUID->"065d169c-9da9-42bf-a47c-bc7a2010988c"],
+
+Cell["\<\
+This notebook verifies the strain-engineering formulas in SI Sec. XIII: the \
+biaxial square-flake energy and force, and the uniaxial rectangular-flake \
+energy and force.\
+\>", "Text",ExpressionUUID->"d6608566-ad13-4994-bfee-0ae240f5d0e7"],
+
+Cell["\<\
+Reader map: for biaxial strain, first substitute the strain-dependent moire \
+wavelength and square-flake xi values into the phi = 90 degree parallelogram \
+formula, then differentiate with respect to dx. For uniaxial strain, directly \
+integrate the one-dimensional density over the strained rectangle and again \
+differentiate with respect to dx.\
+\>", "Text",ExpressionUUID->"5ba72b64-1c1a-40d2-9909-84d989e6a361"],
+
+Cell[CellGroupData[{
+
+Cell["Biaxial and Uniaxial Strain Checks", "Section",ExpressionUUID->"3502cbfe-f6d7-46fa-8924-fbfe3247d9a9"],
+
+Cell["\<\
+The variables eps, L0, H0, rb, dx, and dy denote strain, original flake \
+length, flake height, graphene lattice length |Rb|, and translation \
+components. The final numerical estimate uses rb = 0.246 nm and L0 = 100 nm \
+to connect the sine-prefactor zeros with the strain scale discussed in the \
+paper.\
+\>", "Text",ExpressionUUID->"38c6a740-2edd-4969-bc3e-31fe7c3f39a8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "This", " ", "notebook", " ", "verifies", " ", "the", " ", "strain"}], 
+    "-", 
+    RowBox[{"engineering", " ", "formulas", " ", "in", " ", "SI", " ", 
+     RowBox[{"Sec", ".", " ", "XIII", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"We", " ", "use", " ", "eta"}], " ", "=", " ", 
+    RowBox[{
+    "1", " ", "because", " ", "the", " ", "SI", " ", "strain", " ", 
+     "formulas", " ", "are", " ", "written", " ", "without", " ", "the", " ", 
+     "overall", " ", "density", " ", 
+     RowBox[{"amplitude", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"$Assumptions", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Element", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "dx", ",", " ", "dy", ",", " ", "eps", ",", " ", "L0", ",", " ", 
+          "rb", ",", " ", "H0", ",", " ", "lambda", ",", " ", "xi1", ",", " ",
+           "xi2"}], "}"}], ",", " ", "Reals"}], "]"}], " ", "&&", "\n", "  ", 
+      RowBox[{"eps", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"L0", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"rb", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"H0", " ", ">", " ", "0"}]}]}], ";"}]}]}]], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"dd815431-1fdd-4d6a-a5fe-e7d498f25531"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Biaxial", " ", "strain", " ", "changes", " ", "the", " ", "moire", " ", 
+    "wavelength", " ", "and", " ", "the", " ", "square", " ", "flake", " ", 
+    RowBox[{"parameters", "."}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"lambdaStrain", " ", "=", " ", 
+     RowBox[{"rb", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", " ", "+", " ", "eps"}], ")"}], "/", "eps"}]}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"xi1Biaxial", " ", "=", " ", 
+     RowBox[{"2", " ", "L0", " ", 
+      RowBox[{"eps", "/", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"xi2Biaxial", " ", "=", " ", 
+     RowBox[{"L0", " ", 
+      RowBox[{"eps", "/", "rb"}]}]}], ";"}]}]}]], "Input",
+ CellLabel->"In[3]:=",ExpressionUUID->"69077aa9-0679-471c-ade9-880f650f9ea4"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"<|", 
+  RowBox[{
+   RowBox[{"\"\<lambda(eps)\>\"", " ", "->", " ", "lambdaStrain"}], ",", "\n",
+    "  ", 
+   RowBox[{"\"\<xi1 for square flake\>\"", " ", "->", " ", "xi1Biaxial"}], 
+   ",", "\n", "  ", 
+   RowBox[{"\"\<xi2 for square flake\>\"", " ", "->", " ", "xi2Biaxial"}]}], 
+  "|>"}]], "Input",
+ CellLabel->"In[6]:=",ExpressionUUID->"72338b57-1837-4c59-992f-3417377594c8"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"lambda(eps)\"\>", "\[Rule]", 
+    FractionBox[
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", "+", "eps"}], ")"}], " ", "rb"}], "eps"]}], ",", 
+   RowBox[{"\<\"xi1 for square flake\"\>", "\[Rule]", 
+    FractionBox[
+     RowBox[{"2", " ", "eps", " ", "L0"}], 
+     RowBox[{
+      SqrtBox["3"], " ", "rb"}]]}], ",", 
+   RowBox[{"\<\"xi2 for square flake\"\>", "\[Rule]", 
+    FractionBox[
+     RowBox[{"eps", " ", "L0"}], "rb"]}]}], "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{3.9877164805342336`*^9, 3.9877244717675295`*^9},
+ CellLabel->"Out[6]=",ExpressionUUID->"f2f4920c-266b-4cb1-a6b7-21f09bf4afa1"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"This", " ", "is", " ", 
+     RowBox[{"Eq", ".", " ", 
+      RowBox[{"(", "S3", ")"}]}], " ", "after", " ", "setting", " ", "phi"}], 
+    " ", "=", " ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Pi", "/", "2."}], " ", "The", " ", "square"}], "-", 
+     RowBox[{
+     "flake", " ", "substitution", " ", "below", "\n", "   ", "should", " ", 
+      "reproduce", " ", "the", " ", "published", " ", "biaxial"}], "-", 
+     RowBox[{"strain", " ", "energy", " ", 
+      RowBox[{"Eq", ".", " ", 
+       RowBox[{"(", "S21", ")"}], "."}]}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"generalPhi90", " ", "=", " ", 
+    RowBox[{"FullSimplify", "[", "\n", "  ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sqrt", "[", "3", "]"}], " ", 
+        RowBox[{"lambda", "^", "2"}], " ", "xi2", " ", 
+        RowBox[{"Cos", "[", 
+         RowBox[{
+          RowBox[{"4", " ", "Pi", " ", 
+           RowBox[{"dy", "/", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}], " ", 
+          "+", " ", 
+          RowBox[{"Pi", " ", "xi1"}]}], "]"}], " ", 
+        RowBox[{
+         RowBox[{"Sin", "[", 
+          RowBox[{"Pi", " ", "xi1"}], "]"}], "/", 
+         RowBox[{"(", 
+          RowBox[{"2", " ", "Pi"}], ")"}]}]}], " ", "-", "\n", "    ", 
+       RowBox[{
+        RowBox[{"Sqrt", "[", "3", "]"}], " ", 
+        RowBox[{
+         RowBox[{"lambda", "^", "2"}], "/", 
+         RowBox[{"(", 
+          RowBox[{"2", " ", 
+           RowBox[{"Pi", "^", "2"}]}], ")"}]}], " ", 
+        RowBox[{"(", "\n", "      ", 
+         RowBox[{
+          RowBox[{"2", " ", 
+           RowBox[{"Sin", "[", 
+            RowBox[{
+             RowBox[{"-", "Pi"}], " ", 
+             RowBox[{"xi1", "/", "2"}]}], "]"}], " ", 
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"Pi", " ", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"2", " ", 
+                  RowBox[{"Sqrt", "[", "3", "]"}], " ", "dx"}], " ", "+", " ", 
+                 RowBox[{"2", " ", "dy"}]}], ")"}], "/", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}], " ",
+              "+", "\n", "        ", 
+             RowBox[{"Pi", " ", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"xi1", " ", "-", " ", 
+                 RowBox[{"2", " ", "xi2"}]}], ")"}], "/", "2"}]}]}], "]"}], 
+           " ", 
+           RowBox[{"Sin", "[", 
+            RowBox[{"Pi", " ", "xi2"}], "]"}]}], " ", "-", "\n", "      ", 
+          RowBox[{"2", " ", 
+           RowBox[{"Sin", "[", 
+            RowBox[{"Pi", " ", 
+             RowBox[{"xi1", "/", "2"}]}], "]"}], " ", 
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"Pi", " ", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"-", "2"}], " ", 
+                  RowBox[{"Sqrt", "[", "3", "]"}], " ", "dx"}], " ", "+", " ", 
+                 RowBox[{"2", " ", "dy"}]}], ")"}], "/", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}], " ",
+              "+", "\n", "        ", 
+             RowBox[{"Pi", " ", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"xi1", " ", "+", " ", 
+                 RowBox[{"2", " ", "xi2"}]}], ")"}], "/", "2"}]}]}], "]"}], 
+           " ", 
+           RowBox[{"Sin", "[", 
+            RowBox[{"Pi", " ", "xi2"}], "]"}]}]}], "\n", "    ", ")"}]}]}], 
+      ",", "\n", "  ", "$Assumptions"}], "\n", "]"}]}], ";"}]}]], "Input",
+ CellLabel->"In[7]:=",ExpressionUUID->"df45c0a6-40c5-47d4-b520-459e5e0e147c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"biaxialEnergyFromEqS3", " ", "=", " ", 
+   RowBox[{"FullSimplify", "[", "\n", "  ", 
+    RowBox[{
+     RowBox[{"generalPhi90", " ", "/.", " ", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"lambda", " ", "->", " ", "lambdaStrain"}], ",", " ", 
+        RowBox[{"xi1", " ", "->", " ", "xi1Biaxial"}], ",", " ", 
+        RowBox[{"xi2", " ", "->", " ", "xi2Biaxial"}]}], "}"}]}], ",", "\n", 
+     "  ", "$Assumptions"}], "\n", "]"}]}], ";"}]], "Input",
+ CellLabel->"In[8]:=",ExpressionUUID->"a07c4147-70a0-4b76-a78e-3713a93656b4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"biaxialEnergyS21", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb", " ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", " ", "+", " ", "eps"}], ")"}], "^", "2"}], "/", 
+     RowBox[{"(", 
+      RowBox[{"2", " ", 
+       RowBox[{"Pi", "^", "2"}], " ", 
+       RowBox[{"eps", "^", "2"}]}], ")"}]}], " ", 
+    RowBox[{"(", "\n", "  ", 
+     RowBox[{
+      RowBox[{"2", " ", "rb", " ", 
+       RowBox[{"(", "\n", "    ", 
+        RowBox[{
+         RowBox[{"Cos", "[", 
+          RowBox[{"Pi", " ", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"6", " ", "dx"}], " ", "+", " ", 
+              RowBox[{"2", " ", 
+               RowBox[{"Sqrt", "[", "3", "]"}], " ", "dy"}], " ", "+", " ", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "3"}], " ", "+", " ", 
+                 RowBox[{"Sqrt", "[", "3", "]"}]}], ")"}], " ", "L0", " ", 
+               "eps"}]}], ")"}], "/", 
+            RowBox[{"(", 
+             RowBox[{"3", " ", "rb"}], ")"}]}]}], "]"}], " ", "+", "\n", 
+         "    ", 
+         RowBox[{"Cos", "[", 
+          RowBox[{"Pi", " ", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"-", "6"}], " ", "dx"}], " ", "+", " ", 
+              RowBox[{"2", " ", 
+               RowBox[{"Sqrt", "[", "3", "]"}], " ", "dy"}], " ", "+", " ", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"3", " ", "+", " ", 
+                 RowBox[{"Sqrt", "[", "3", "]"}]}], ")"}], " ", "L0", " ", 
+               "eps"}]}], ")"}], "/", 
+            RowBox[{"(", 
+             RowBox[{"3", " ", "rb"}], ")"}]}]}], "]"}]}], "\n", "  ", ")"}], 
+       " ", 
+       RowBox[{"Sin", "[", 
+        RowBox[{"L0", " ", "Pi", " ", 
+         RowBox[{"eps", "/", "rb"}]}], "]"}], " ", 
+       RowBox[{"Sin", "[", 
+        RowBox[{"L0", " ", "Pi", " ", 
+         RowBox[{"eps", "/", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}], "]"}]}], 
+      " ", "+", "\n", "  ", 
+      RowBox[{"L0", " ", "Pi", " ", "eps", " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"4", " ", "Pi", " ", 
+          RowBox[{"dy", "/", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}], " ", 
+         "+", " ", 
+         RowBox[{"2", " ", "L0", " ", "Pi", " ", 
+          RowBox[{"eps", "/", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}]}], "]"}],
+        " ", "*", "\n", "    ", 
+       RowBox[{"Sin", "[", 
+        RowBox[{"2", " ", "L0", " ", "Pi", " ", 
+         RowBox[{"eps", "/", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}], 
+        "]"}]}]}], "\n", ")"}]}]}], ";"}]], "Input",
+ CellLabel->"In[9]:=",ExpressionUUID->"e2b49664-a0a2-428e-b851-95d8324d68fe"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"checkS21", " ", "=", " ", 
+  RowBox[{"FullSimplify", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"TrigReduce", "[", 
+      RowBox[{"biaxialEnergyFromEqS3", " ", "-", " ", "biaxialEnergyS21"}], 
+      "]"}], " ", "==", " ", "0"}], ",", " ", "$Assumptions"}], 
+   "]"}]}]], "Input",
+ CellLabel->"In[10]:=",ExpressionUUID->"387c13e1-d4e5-40dc-a299-5017ccc052e8"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{3.987716487856365*^9, 3.9877244783651896`*^9},
+ CellLabel->"Out[10]=",ExpressionUUID->"e2f58e98-7289-4017-b105-c7507e3cc8ea"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Differentiating", " ", "the", " ", "energy", " ", "with", " ", "respect", 
+    " ", "to", " ", "dx", " ", "gives", " ", "the", " ", "sliding", " ", 
+    "force", " ", 
+    RowBox[{"Eq", ".", " ", 
+     RowBox[{"(", "S22", ")"}], "."}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"biaxialFrictionFromDerivative", " ", "=", " ", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"D", "[", 
+        RowBox[{"biaxialEnergyS21", ",", " ", "dx"}], "]"}]}], ",", " ", 
+      "$Assumptions"}], "]"}]}], ";"}]}]], "Input",
+ CellLabel->"In[11]:=",ExpressionUUID->"9a5cbec4-c235-45b0-946d-28ff0c5a5b77"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"biaxialFrictionS22", " ", "=", " ", 
+   RowBox[{"4", " ", 
+    RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb", " ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", " ", "+", " ", "eps"}], ")"}], "^", "2"}], "/", 
+     RowBox[{"(", 
+      RowBox[{"Pi", " ", 
+       RowBox[{"eps", "^", "2"}]}], ")"}]}], " ", "*", "\n", "  ", 
+    RowBox[{"Cos", "[", 
+     RowBox[{"Pi", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"2", " ", "dy"}], " ", "+", " ", 
+         RowBox[{"L0", " ", "eps"}]}], ")"}], "/", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}], "]"}], " ", 
+    "*", "\n", "  ", 
+    RowBox[{"Sin", "[", 
+     RowBox[{"Pi", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"2", " ", "dx"}], " ", "-", " ", 
+         RowBox[{"L0", " ", "eps"}]}], ")"}], "/", "rb"}]}], "]"}], " ", "*", 
+    "\n", "  ", 
+    RowBox[{"Sin", "[", 
+     RowBox[{"L0", " ", "Pi", " ", 
+      RowBox[{"eps", "/", "rb"}]}], "]"}], " ", "*", "\n", "  ", 
+    RowBox[{"Sin", "[", 
+     RowBox[{"L0", " ", "Pi", " ", 
+      RowBox[{"eps", "/", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Sqrt", "[", "3", "]"}], " ", "rb"}], ")"}]}]}], "]"}]}]}], 
+  ";"}]], "Input",
+ CellLabel->"In[12]:=",ExpressionUUID->"b24b10a7-6e15-4413-80ec-73359465eed4"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"checkS22", " ", "=", " ", 
+  RowBox[{"FullSimplify", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"TrigReduce", "[", 
+      RowBox[{
+      "biaxialFrictionFromDerivative", " ", "-", " ", "biaxialFrictionS22"}], 
+      "]"}], " ", "==", " ", "0"}], ",", " ", "$Assumptions"}], 
+   "]"}]}]], "Input",
+ CellLabel->"In[13]:=",ExpressionUUID->"f526921b-d729-4931-98ad-60c592cd9f74"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{3.9877164893494463`*^9, 3.987724479602813*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"7adaa148-f082-4719-83cb-0271946e042e"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Uniaxial", " ", "strain", " ", "is", " ", 
+    RowBox[{"simpler", ":", " ", 
+     RowBox[{
+     "the", " ", "density", " ", "depends", " ", "only", " ", "on", " ", 
+      RowBox[{"x", ".", "\n", "   ", "Integrating"}], " ", "over", " ", "x", 
+      " ", "from", " ", "0", " ", "to", " ", "L0", " ", 
+      RowBox[{"(", 
+       RowBox[{"1", " ", "+", " ", "eps"}], ")"}], " ", "gives", " ", 
+      RowBox[{"Eq", ".", " ", 
+       RowBox[{"(", "S23", ")"}]}], " ", "in", " ", "this", " ", "coordinate",
+       " ", 
+      RowBox[{"convention", "."}]}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"rhoUniaxial", "[", "x_", "]"}], " ", ":=", " ", 
+    RowBox[{"Cos", "[", 
+     RowBox[{"2", " ", "Pi", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"dx", " ", "+", " ", 
+         RowBox[{"eps", " ", "x"}]}], ")"}], "/", 
+       RowBox[{"(", 
+        RowBox[{"rb", " ", 
+         RowBox[{"(", 
+          RowBox[{"1", " ", "+", " ", "eps"}], ")"}]}], ")"}]}]}], "]"}]}], 
+   ";"}]}]], "Input",
+ CellLabel->"In[14]:=",ExpressionUUID->"71f7be8b-9c8f-47fb-a5d6-c2bfad7ac9db"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"uniaxialEnergyFromIntegral", " ", "=", " ", 
+   RowBox[{"FullSimplify", "[", "\n", "  ", 
+    RowBox[{
+     RowBox[{"H0", " ", 
+      RowBox[{"Integrate", "[", 
+       RowBox[{
+        RowBox[{"rhoUniaxial", "[", "x", "]"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", " ", "0", ",", " ", 
+          RowBox[{"L0", " ", 
+           RowBox[{"(", 
+            RowBox[{"1", " ", "+", " ", "eps"}], ")"}]}]}], "}"}], ",", " ", 
+        RowBox[{"GenerateConditions", " ", "->", " ", "False"}]}], "]"}]}], 
+     ",", "\n", "  ", "$Assumptions"}], "\n", "]"}]}], ";"}]], "Input",
+ CellLabel->"In[15]:=",ExpressionUUID->"9b43a4ba-47f3-4929-b78a-b1a52db0a974"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"uniaxialEnergyS23", " ", "=", " ", 
+   RowBox[{"H0", " ", "rb", " ", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"1", " ", "+", " ", "eps"}], ")"}], "/", 
+     RowBox[{"(", 
+      RowBox[{"Pi", " ", "eps"}], ")"}]}], " ", "*", "\n", "  ", 
+    RowBox[{"Cos", "[", 
+     RowBox[{"Pi", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"2", " ", 
+         RowBox[{"dx", "/", 
+          RowBox[{"(", 
+           RowBox[{"rb", " ", 
+            RowBox[{"(", 
+             RowBox[{"1", " ", "+", " ", "eps"}], ")"}]}], ")"}]}]}], " ", 
+        "+", " ", 
+        RowBox[{"L0", " ", 
+         RowBox[{"eps", "/", "rb"}]}]}], ")"}]}], "]"}], " ", "*", "\n", "  ", 
+    RowBox[{"Sin", "[", 
+     RowBox[{"Pi", " ", "L0", " ", 
+      RowBox[{"eps", "/", "rb"}]}], "]"}]}]}], ";"}]], "Input",
+ CellLabel->"In[16]:=",ExpressionUUID->"4c600b77-df8c-4712-8ee7-6d663fd313b3"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"checkS23", " ", "=", " ", 
+  RowBox[{"FullSimplify", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"TrigReduce", "[", 
+      RowBox[{
+      "uniaxialEnergyFromIntegral", " ", "-", " ", "uniaxialEnergyS23"}], 
+      "]"}], " ", "==", " ", "0"}], ",", " ", "$Assumptions"}], 
+   "]"}]}]], "Input",
+ CellLabel->"In[17]:=",ExpressionUUID->"62a18f0c-bdba-4749-9332-644aa0139239"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{3.987716490782158*^9, 3.987724481077325*^9},
+ CellLabel->"Out[17]=",ExpressionUUID->"e620b7b1-2687-4e05-9e44-5e4d6c240150"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Differentiating", " ", 
+    RowBox[{"Eq", ".", " ", 
+     RowBox[{"(", "S23", ")"}]}], " ", "gives", " ", "the", " ", "uniaxial", 
+    " ", "sliding", " ", "force", " ", 
+    RowBox[{"Eq", ".", " ", 
+     RowBox[{"(", "S24", ")"}], "."}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"uniaxialFrictionFromDerivative", " ", "=", " ", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"D", "[", 
+        RowBox[{"uniaxialEnergyS23", ",", " ", "dx"}], "]"}]}], ",", " ", 
+      "$Assumptions"}], "]"}]}], ";"}]}]], "Input",
+ CellLabel->"In[18]:=",ExpressionUUID->"cbc822ae-1b68-4066-aeb3-d56a8a3a5834"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"uniaxialFrictionS24", " ", "=", " ", 
+   RowBox[{"2", " ", 
+    RowBox[{"H0", "/", "eps"}], " ", "*", "\n", "  ", 
+    RowBox[{"Sin", "[", 
+     RowBox[{"Pi", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"2", " ", 
+         RowBox[{"dx", "/", 
+          RowBox[{"(", 
+           RowBox[{"rb", " ", 
+            RowBox[{"(", 
+             RowBox[{"1", " ", "+", " ", "eps"}], ")"}]}], ")"}]}]}], " ", 
+        "+", " ", 
+        RowBox[{"L0", " ", 
+         RowBox[{"eps", "/", "rb"}]}]}], ")"}]}], "]"}], " ", "*", "\n", "  ", 
+    RowBox[{"Sin", "[", 
+     RowBox[{"Pi", " ", "L0", " ", 
+      RowBox[{"eps", "/", "rb"}]}], "]"}]}]}], ";"}]], "Input",
+ CellLabel->"In[19]:=",ExpressionUUID->"41d3b8cf-a75e-49b8-ab7e-3aae8ccc60e7"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"checkS24", " ", "=", " ", 
+  RowBox[{"FullSimplify", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"TrigReduce", "[", 
+      RowBox[{
+      "uniaxialFrictionFromDerivative", " ", "-", " ", 
+       "uniaxialFrictionS24"}], "]"}], " ", "==", " ", "0"}], ",", " ", 
+    "$Assumptions"}], "]"}]}]], "Input",
+ CellLabel->"In[20]:=",ExpressionUUID->"67d88929-ebc1-4a09-a99e-c56d57c683d0"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{3.987716490911186*^9, 3.987724481193019*^9},
+ CellLabel->"Out[20]=",ExpressionUUID->"79b71435-b037-4aae-92ba-ee1868c8f146"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "The", " ", "force", " ", "amplitude", " ", "contains", " ", "sine", " ", 
+    RowBox[{"prefactors", ".", " ", "Their"}], " ", "first", " ", "zeros", 
+    " ", "explain", " ", "the", "\n", "   ", "sharp", " ", "friction", " ", 
+    "drop", " ", "near", " ", "0.2", " ", "percent", " ", "strain", " ", 
+    "for", " ", "a", " ", "100", " ", "nm", " ", "graphene", " ", 
+    RowBox[{"flake", "."}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"firstZeroEstimates", " ", "=", " ", 
+    RowBox[{"N", "[", 
+     RowBox[{
+      RowBox[{"<|", "\n", "  ", 
+       RowBox[{
+        RowBox[{"\"\<rb used here (nm)\>\"", " ", "->", " ", "0.246"}], ",", 
+        "\n", "  ", 
+        RowBox[{"\"\<L0 used here (nm)\>\"", " ", "->", " ", "100"}], ",", 
+        "\n", "  ", 
+        RowBox[{"\"\<first uniaxial zero eps\>\"", " ", "->", " ", 
+         RowBox[{"0.246", "/", "100"}]}], ",", "\n", "  ", 
+        RowBox[{"\"\<first uniaxial zero percent\>\"", " ", "->", " ", 
+         RowBox[{"100", " ", 
+          RowBox[{"0.246", "/", "100"}]}]}], ",", "\n", "  ", 
+        RowBox[{"\"\<next biaxial sine zero eps\>\"", " ", "->", " ", 
+         RowBox[{
+          RowBox[{"Sqrt", "[", "3", "]"}], " ", 
+          RowBox[{"0.246", "/", "100"}]}]}], ",", "\n", "  ", 
+        RowBox[{"\"\<next biaxial sine zero percent\>\"", " ", "->", " ", 
+         RowBox[{"100", " ", 
+          RowBox[{"Sqrt", "[", "3", "]"}], " ", 
+          RowBox[{"0.246", "/", "100"}]}]}]}], "\n", "|>"}], ",", " ", "6"}], 
+     "]"}]}], ";"}]}]], "Input",
+ CellLabel->"In[21]:=",ExpressionUUID->"9e457b17-9c72-4237-a39c-eaef2328b5e1"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"<|", 
+  RowBox[{
+   RowBox[{"\"\<Eq. S21 from Eq. S3\>\"", " ", "->", " ", "checkS21"}], ",", 
+   "\n", "  ", 
+   RowBox[{"\"\<Eq. S22 from derivative\>\"", " ", "->", " ", "checkS22"}], 
+   ",", "\n", "  ", 
+   RowBox[{
+   "\"\<Eq. S23 from direct integral\>\"", " ", "->", " ", "checkS23"}], ",", 
+   "\n", "  ", 
+   RowBox[{"\"\<Eq. S24 from derivative\>\"", " ", "->", " ", "checkS24"}], 
+   ",", "\n", "  ", 
+   RowBox[{"\"\<zero estimates\>\"", " ", "->", " ", "firstZeroEstimates"}]}],
+   "|>"}]], "Input",
+ CellLabel->"In[22]:=",ExpressionUUID->"4b64c7ba-83a7-42a1-bef8-615dc2459d35"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"Eq. S21 from Eq. S3\"\>", "\[Rule]", "True"}], ",", 
+   RowBox[{"\<\"Eq. S22 from derivative\"\>", "\[Rule]", "True"}], ",", 
+   RowBox[{"\<\"Eq. S23 from direct integral\"\>", "\[Rule]", "True"}], ",", 
+   RowBox[{"\<\"Eq. S24 from derivative\"\>", "\[Rule]", "True"}], ",", 
+   RowBox[{"\<\"zero estimates\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", 
+     RowBox[{
+      RowBox[{"\<\"rb used here (nm)\"\>", "\[Rule]", "0.246`"}], ",", 
+      RowBox[{"\<\"L0 used here (nm)\"\>", "\[Rule]", "100.`6."}], ",", 
+      RowBox[{"\<\"first uniaxial zero eps\"\>", "\[Rule]", "0.00246`"}], ",", 
+      RowBox[{"\<\"first uniaxial zero percent\"\>", "\[Rule]", "0.246`"}], 
+      ",", 
+      RowBox[{"\<\"next biaxial sine zero eps\"\>", "\[Rule]", 
+       "0.004260844986619438`"}], ",", 
+      RowBox[{"\<\"next biaxial sine zero percent\"\>", "\[Rule]", 
+       "0.42608449866194376`"}]}], "\[RightAssociation]"}]}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{3.9877164909146967`*^9, 3.987724481207542*^9},
+ CellLabel->"Out[22]=",ExpressionUUID->"17a88c89-c713-4d3a-90d6-217e23d8c1c3"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+Saveable->True,
+WindowSize->{918, 654},
+WindowMargins->{{136.5, Automatic}, {Automatic, 40.5}},
+WindowTitle->"04_strain_engineering.nb",
+FrontEndVersion->"13.0 for Microsoft Windows (64-bit) (December 2, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"ff18d0a7-b673-4865-b722-3f8b2e713ace"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[618, 23, 93, 0, 98, "Title",ExpressionUUID->"065d169c-9da9-42bf-a47c-bc7a2010988c"],
+Cell[714, 25, 250, 4, 58, "Text",ExpressionUUID->"d6608566-ad13-4994-bfee-0ae240f5d0e7"],
+Cell[967, 31, 427, 6, 81, "Text",ExpressionUUID->"5ba72b64-1c1a-40d2-9909-84d989e6a361"],
+Cell[CellGroupData[{
+Cell[1419, 41, 108, 0, 67, "Section",ExpressionUUID->"3502cbfe-f6d7-46fa-8924-fbfe3247d9a9"],
+Cell[1530, 43, 384, 6, 81, "Text",ExpressionUUID->"38c6a740-2edd-4969-bc3e-31fe7c3f39a8"],
+Cell[1917, 51, 1453, 34, 105, "Input",ExpressionUUID->"dd815431-1fdd-4d6a-a5fe-e7d498f25531"],
+Cell[3373, 87, 938, 27, 86, "Input",ExpressionUUID->"69077aa9-0679-471c-ade9-880f650f9ea4"],
+Cell[CellGroupData[{
+Cell[4336, 118, 403, 9, 67, "Input",ExpressionUUID->"72338b57-1837-4c59-992f-3417377594c8"],
+Cell[4742, 129, 693, 17, 52, "Output",ExpressionUUID->"f2f4920c-266b-4cb1-a6b7-21f09bf4afa1"]
+}, Open  ]],
+Cell[5450, 149, 3867, 101, 238, "Input",ExpressionUUID->"df45c0a6-40c5-47d4-b520-459e5e0e147c"],
+Cell[9320, 252, 568, 12, 86, "Input",ExpressionUUID->"a07c4147-70a0-4b76-a78e-3713a93656b4"],
+Cell[9891, 266, 3093, 84, 162, "Input",ExpressionUUID->"e2b49664-a0a2-428e-b851-95d8324d68fe"],
+Cell[CellGroupData[{
+Cell[13009, 354, 383, 9, 28, "Input",ExpressionUUID->"387c13e1-d4e5-40dc-a299-5017ccc052e8"],
+Cell[13395, 365, 176, 2, 32, "Output",ExpressionUUID->"e2f58e98-7289-4017-b105-c7507e3cc8ea"]
+}, Open  ]],
+Cell[13586, 370, 689, 17, 48, "Input",ExpressionUUID->"9a5cbec4-c235-45b0-946d-28ff0c5a5b77"],
+Cell[14278, 389, 1400, 41, 105, "Input",ExpressionUUID->"b24b10a7-6e15-4413-80ec-73359465eed4"],
+Cell[CellGroupData[{
+Cell[15703, 434, 400, 10, 28, "Input",ExpressionUUID->"f526921b-d729-4931-98ad-60c592cd9f74"],
+Cell[16106, 446, 176, 2, 32, "Output",ExpressionUUID->"7adaa148-f082-4719-83cb-0271946e042e"]
+}, Open  ]],
+Cell[16297, 451, 1152, 29, 67, "Input",ExpressionUUID->"71f7be8b-9c8f-47fb-a5d6-c2bfad7ac9db"],
+Cell[17452, 482, 701, 16, 86, "Input",ExpressionUUID->"9b43a4ba-47f3-4929-b78a-b1a52db0a974"],
+Cell[18156, 500, 907, 25, 67, "Input",ExpressionUUID->"4c600b77-df8c-4712-8ee7-6d663fd313b3"],
+Cell[CellGroupData[{
+Cell[19088, 529, 396, 10, 28, "Input",ExpressionUUID->"62a18f0c-bdba-4749-9332-644aa0139239"],
+Cell[19487, 541, 174, 2, 32, "Output",ExpressionUUID->"e620b7b1-2687-4e05-9e44-5e4d6c240150"]
+}, Open  ]],
+Cell[19676, 546, 690, 17, 48, "Input",ExpressionUUID->"cbc822ae-1b68-4066-aeb3-d56a8a3a5834"],
+Cell[20369, 565, 779, 21, 67, "Input",ExpressionUUID->"41d3b8cf-a75e-49b8-ab7e-3aae8ccc60e7"],
+Cell[CellGroupData[{
+Cell[21173, 590, 404, 10, 28, "Input",ExpressionUUID->"67d88929-ebc1-4a09-a99e-c56d57c683d0"],
+Cell[21580, 602, 174, 2, 32, "Output",ExpressionUUID->"79b71435-b037-4aae-92ba-ee1868c8f146"]
+}, Open  ]],
+Cell[21769, 607, 1660, 34, 200, "Input",ExpressionUUID->"9e457b17-9c72-4237-a39c-eaef2328b5e1"],
+Cell[CellGroupData[{
+Cell[23454, 645, 616, 14, 105, "Input",ExpressionUUID->"4b64c7ba-83a7-42a1-bef8-615dc2459d35"],
+Cell[24073, 661, 1181, 21, 113, "Output",ExpressionUUID->"17a88c89-c713-4d3a-90d6-217e23d8c1c3"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

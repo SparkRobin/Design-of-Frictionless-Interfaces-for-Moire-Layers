@@ -1,0 +1,546 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     20299,        538]
+NotebookOptionsPosition[     18012,        494]
+NotebookOutlinePosition[     18482,        512]
+CellTagsIndexPosition[     18439,        509]
+WindowTitle->02_parallelogram_energy.nb
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["02 Parallelogram Energy", "Title",ExpressionUUID->"5bc2cc2a-35ef-4494-bc7e-cf9693b0293a"],
+
+Cell["\<\
+This notebook keeps the calculation simple: it directly integrates the \
+60-degree parallelogram and checks the directional and all-direction integer \
+limits.\
+\>", "Text",ExpressionUUID->"c1f30cb0-c36c-49a1-a13b-336bd5d316cf"],
+
+Cell["\<\
+Reader map: this is not the full general Eq. (2). It is the clean 60-degree \
+special case, which is enough to show how the area integral produces the \
+directional-frictionless terms and why integer xi1/xi2 remove the \
+translational corrugation.\
+\>", "Text",ExpressionUUID->"73973a69-2373-4579-ad0b-1b334a8a1fb0"],
+
+Cell[CellGroupData[{
+
+Cell["60-Degree Direct Integral", "Section",ExpressionUUID->"8ad143a1-6664-4fe9-99f1-c01286618c8f"],
+
+Cell["\<\
+The integration region is a parallelogram with base xi2 lambda and height \
+Sqrt[3] xi1 lambda/2. The final association reports the two directional \
+limits, then the all-direction zero-energy limit when both parameters are \
+integers.\
+\>", "Text",ExpressionUUID->"f0ed3a9e-3df5-4cc2-a639-1a3e7ffe404c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "This", " ", "notebook", " ", "derives", " ", "the", " ", "simple", " ", 
+     "60"}], "-", 
+    RowBox[{
+    "degree", " ", "parallelogram", " ", "energy", " ", "directly", " ", "by",
+      " ", 
+     RowBox[{"integration", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "It", " ", "intentionally", " ", "does", " ", "not", " ", "try", " ", 
+     "to", " ", "rederive", " ", "the", " ", "fully", " ", "general", " ", 
+     RowBox[{"Eq", ".", " ", 
+      RowBox[{"(", "2", ")"}]}]}], ",", " ", 
+    RowBox[{"which", " ", "is", " ", "algebraically", " ", "too", " ", 
+     RowBox[{"large", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"$Assumptions", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Element", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "xi1", ",", " ", "xi2", ",", " ", "lam", ",", " ", "eta", ",", " ", 
+          "dxm", ",", " ", "dym"}], "}"}], ",", " ", "Reals"}], "]"}], " ", "&&",
+       " ", 
+      RowBox[{"xi1", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"xi2", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"lam", " ", ">", " ", "0"}]}]}], ";"}]}]}]], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"b9e71462-dfcc-4089-8c7f-dbf0e0a5ce2b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"rhoM", "[", 
+    RowBox[{"x_", ",", " ", "y_"}], "]"}], " ", ":=", " ", 
+   RowBox[{"eta", " ", 
+    RowBox[{"(", "\n", "  ", 
+     RowBox[{
+      RowBox[{"Cos", "[", 
+       RowBox[{"4", " ", "Pi", " ", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"y", " ", "+", " ", "dym"}], ")"}], "/", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Sqrt", "[", "3", "]"}], " ", "lam"}], ")"}]}]}], "]"}], 
+      " ", "+", "\n", "  ", 
+      RowBox[{"2", " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{"2", " ", "Pi", " ", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"y", " ", "+", " ", "dym"}], ")"}], "/", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Sqrt", "[", "3", "]"}], " ", "lam"}], ")"}]}]}], "]"}], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{"2", " ", "Pi", " ", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"x", " ", "+", " ", "dxm"}], ")"}], "/", "lam"}]}], 
+        "]"}]}]}], "\n", ")"}]}]}], ";"}]], "Input",
+ CellLabel->"In[3]:=",ExpressionUUID->"e235069a-7bc2-4c67-9c67-f837e752d8fa"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"Standard", " ", "60"}], "-", 
+    RowBox[{"degree", " ", 
+     RowBox[{"parallelogram", ".", "\n", "   ", "The"}], " ", "base", " ", 
+     "length", " ", "is", " ", "xi2", " ", "lambda", " ", "and", " ", "the", 
+     " ", "height", " ", "is", " ", 
+     RowBox[{
+      RowBox[{"Sqrt", "[", "3", "]"}], "/", "2"}], " ", "xi1", " ", 
+     RowBox[{"lambda", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"height", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Sqrt", "[", "3", "]"}], " ", "xi1", " ", 
+      RowBox[{"lam", "/", "2"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"xLeft", "[", "y_", "]"}], " ", ":=", " ", 
+     RowBox[{"y", "/", 
+      RowBox[{"Sqrt", "[", "3", "]"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"xRight", "[", "y_", "]"}], " ", ":=", " ", 
+     RowBox[{
+      RowBox[{"y", "/", 
+       RowBox[{"Sqrt", "[", "3", "]"}]}], " ", "+", " ", 
+      RowBox[{"xi2", " ", "lam"}]}]}], ";"}]}]}]], "Input",
+ CellLabel->"In[4]:=",ExpressionUUID->"c0ea16a9-32a4-4e07-af20-6e5947e1e70a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"energy60Raw", " ", "=", " ", 
+   RowBox[{"Integrate", "[", "\n", "  ", 
+    RowBox[{
+     RowBox[{"rhoM", "[", 
+      RowBox[{"x", ",", " ", "y"}], "]"}], ",", "\n", "  ", 
+     RowBox[{"{", 
+      RowBox[{"y", ",", " ", "0", ",", " ", "height"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", " ", 
+       RowBox[{"xLeft", "[", "y", "]"}], ",", " ", 
+       RowBox[{"xRight", "[", "y", "]"}]}], "}"}], ",", "\n", "  ", 
+     RowBox[{"GenerateConditions", " ", "->", " ", "False"}]}], "\n", "]"}]}],
+   ";"}]], "Input",
+ CellLabel->"In[7]:=",ExpressionUUID->"4f4df364-0795-46c0-b9c3-17fc74709919"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "Integrate", " ", "sometimes", " ", "writes", " ", "this", " ", 
+     "periodic", " ", "phase", " ", "with", " ", 
+     RowBox[{
+      RowBox[{"FractionalPart", "[", "xi1", "]"}], ".", "\n", "   ", "In"}], 
+     " ", "this", " ", "result", " ", "it", " ", "appears", " ", "in", " ", 
+     "a", " ", 
+     RowBox[{"Cos", "[", "...", "]"}], " ", 
+     RowBox[{"Sin", "[", "...", "]"}], " ", "product"}], ",", " ", 
+    RowBox[{
+    "where", " ", "the", "\n", "   ", "parity", " ", "factors", " ", 
+     "cancel"}], ",", " ", 
+    RowBox[{"so", " ", "replacing", " ", 
+     RowBox[{"FractionalPart", "[", "xi1", "]"}], " ", "by", " ", "xi1", " ", 
+     "gives", " ", "an", " ", "equivalent", " ", 
+     RowBox[{"form", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"energy60", " ", "=", " ", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{"energy60Raw", " ", "/.", " ", 
+      RowBox[{
+       RowBox[{"FractionalPart", "[", "xi1", "]"}], " ", "->", " ", "xi1"}]}],
+      "]"}]}], ";"}]}]], "Input",
+ CellLabel->"In[8]:=",ExpressionUUID->"faeb4499-ab08-43e5-82ef-7b57a7d32592"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"If", " ", "xi2", " ", "is", " ", "an", " ", "integer"}], ",", 
+    " ", 
+    RowBox[{
+     RowBox[{"all", " ", "xi2"}], "-", 
+     RowBox[{"dependent", " ", "sine", " ", "terms", " ", 
+      RowBox[{"vanish", ".", "\n", "   ", "The"}], " ", "energy", " ", 
+      "depends", " ", "only", " ", "on", " ", "dym"}]}], ",", " ", 
+    RowBox[{"so", " ", "sliding", " ", "along", " ", "dxm", " ", "is", " ", 
+     RowBox[{"frictionless", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"energyXi2Integer", " ", "=", " ", 
+     RowBox[{"FullSimplify", "[", "\n", "  ", 
+      RowBox[{
+       RowBox[{"energy60", " ", "/.", " ", 
+        RowBox[{"xi2", " ", "->", " ", "n"}]}], ",", "\n", "  ", 
+       RowBox[{"Assumptions", " ", "->", " ", 
+        RowBox[{
+         RowBox[{"Element", "[", 
+          RowBox[{"n", ",", " ", "Integers"}], "]"}], " ", "&&", " ", 
+         RowBox[{"n", " ", ">", " ", "0"}], " ", "&&", " ", 
+         RowBox[{"xi1", " ", ">", " ", "0"}], " ", "&&", " ", 
+         RowBox[{"lam", " ", ">", " ", "0"}]}]}]}], "\n", "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{"targetXi2Integer", " ", "=", " ", 
+    RowBox[{
+     RowBox[{"Sqrt", "[", "3", "]"}], " ", "eta", " ", 
+     RowBox[{"lam", "^", "2"}], " ", "n", " ", 
+     RowBox[{"Cos", "[", 
+      RowBox[{
+       RowBox[{"4", " ", "Pi", " ", 
+        RowBox[{"dym", "/", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Sqrt", "[", "3", "]"}], " ", "lam"}], ")"}]}]}], " ", "+",
+        " ", 
+       RowBox[{"Pi", " ", "xi1"}]}], "]"}], " ", 
+     RowBox[{
+      RowBox[{"Sin", "[", 
+       RowBox[{"Pi", " ", "xi1"}], "]"}], "/", 
+      RowBox[{"(", 
+       RowBox[{"2", " ", "Pi"}], ")"}]}]}]}]}]}]], "Input",
+ CellLabel->"In[9]:=",ExpressionUUID->"0aa91703-0fcf-4af6-81ea-768e5e1191be"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SqrtBox["3"], " ", "eta", " ", 
+   SuperscriptBox["lam", "2"], " ", "n", " ", 
+   RowBox[{"Cos", "[", 
+    RowBox[{
+     FractionBox[
+      RowBox[{"4", " ", "dym", " ", "\[Pi]"}], 
+      RowBox[{
+       SqrtBox["3"], " ", "lam"}]], "+", 
+     RowBox[{"\[Pi]", " ", "xi1"}]}], "]"}], " ", 
+   RowBox[{"Sin", "[", 
+    RowBox[{"\[Pi]", " ", "xi1"}], "]"}]}], 
+  RowBox[{"2", " ", "\[Pi]"}]]], "Output",
+ CellChangeTimes->{3.9877164797552176`*^9, 3.987724418130732*^9},
+ CellLabel->"Out[10]=",ExpressionUUID->"f3c0338b-90b4-47e7-a1f4-0b8b52392e4d"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"checkXi2Integer", " ", "=", " ", 
+   RowBox[{"FullSimplify", "[", "\n", "  ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"TrigReduce", "[", 
+       RowBox[{"energyXi2Integer", " ", "-", " ", "targetXi2Integer"}], "]"}],
+       " ", "==", " ", "0"}], ",", "\n", "  ", 
+     RowBox[{
+      RowBox[{"Element", "[", 
+       RowBox[{"n", ",", " ", "Integers"}], "]"}], " ", "&&", " ", 
+      RowBox[{"n", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"xi1", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"lam", " ", ">", " ", "0"}]}]}], "\n", "]"}]}], ";"}]], "Input",
+ CellLabel->"In[11]:=",ExpressionUUID->"9dc3f68f-7201-46d9-96da-4cdf36fa9012"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"If", " ", "xi1", " ", "is", " ", "an", " ", "integer"}], ",", 
+    " ", 
+    RowBox[{
+     RowBox[{
+     "the", " ", "remaining", " ", "term", " ", "is", " ", "the", " ", 
+      "rotated", " ", "directional"}], "-", 
+     RowBox[{"frictionless", " ", 
+      RowBox[{"partner", "."}]}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"energyXi1Integer", " ", "=", " ", 
+     RowBox[{"FullSimplify", "[", "\n", "  ", 
+      RowBox[{
+       RowBox[{"energy60", " ", "/.", " ", 
+        RowBox[{"xi1", " ", "->", " ", "m"}]}], ",", "\n", "  ", 
+       RowBox[{"Assumptions", " ", "->", " ", 
+        RowBox[{
+         RowBox[{"Element", "[", 
+          RowBox[{"m", ",", " ", "Integers"}], "]"}], " ", "&&", " ", 
+         RowBox[{"m", " ", ">", " ", "0"}], " ", "&&", " ", 
+         RowBox[{"xi2", " ", ">", " ", "0"}], " ", "&&", " ", 
+         RowBox[{"lam", " ", ">", " ", "0"}]}]}]}], "\n", "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{"targetXi1Integer", " ", "=", " ", 
+    RowBox[{
+     RowBox[{"Sqrt", "[", "3", "]"}], " ", "eta", " ", 
+     RowBox[{"lam", "^", "2"}], " ", "m", " ", 
+     RowBox[{"Sin", "[", 
+      RowBox[{"Pi", " ", "xi2"}], "]"}], " ", "*", "\n", "  ", 
+     RowBox[{
+      RowBox[{"Cos", "[", 
+       RowBox[{
+        RowBox[{"2", " ", "Pi", " ", 
+         RowBox[{"dxm", "/", "lam"}]}], " ", "-", " ", 
+        RowBox[{"2", " ", "Pi", " ", 
+         RowBox[{"dym", "/", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Sqrt", "[", "3", "]"}], " ", "lam"}], ")"}]}]}], " ", 
+        "+", " ", 
+        RowBox[{"Pi", " ", "xi2"}]}], "]"}], "/", 
+      RowBox[{"(", 
+       RowBox[{"2", " ", "Pi"}], ")"}]}]}]}]}]}]], "Input",
+ CellLabel->"In[12]:=",ExpressionUUID->"a05d099e-019c-4181-962f-b3dfa214c85e"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SqrtBox["3"], " ", "eta", " ", 
+   SuperscriptBox["lam", "2"], " ", "m", " ", 
+   RowBox[{"Cos", "[", 
+    RowBox[{
+     FractionBox[
+      RowBox[{"2", " ", "dxm", " ", "\[Pi]"}], "lam"], "-", 
+     FractionBox[
+      RowBox[{"2", " ", "dym", " ", "\[Pi]"}], 
+      RowBox[{
+       SqrtBox["3"], " ", "lam"}]], "+", 
+     RowBox[{"\[Pi]", " ", "xi2"}]}], "]"}], " ", 
+   RowBox[{"Sin", "[", 
+    RowBox[{"\[Pi]", " ", "xi2"}], "]"}]}], 
+  RowBox[{"2", " ", "\[Pi]"}]]], "Output",
+ CellChangeTimes->{3.987716480194601*^9, 3.987724418539362*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"be3b765f-65de-4898-9bee-6ffa6e4ba251"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"checkXi1Integer", " ", "=", " ", 
+   RowBox[{"FullSimplify", "[", "\n", "  ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"TrigReduce", "[", 
+       RowBox[{"energyXi1Integer", " ", "-", " ", "targetXi1Integer"}], "]"}],
+       " ", "==", " ", "0"}], ",", "\n", "  ", 
+     RowBox[{
+      RowBox[{"Element", "[", 
+       RowBox[{"m", ",", " ", "Integers"}], "]"}], " ", "&&", " ", 
+      RowBox[{"m", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"xi2", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"lam", " ", ">", " ", "0"}]}]}], "\n", "]"}]}], ";"}]], "Input",
+ CellLabel->"In[14]:=",ExpressionUUID->"ff5496a4-68d4-4656-a30d-a255ec67ac2e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "If", " ", "both", " ", "side", " ", "parameters", " ", "are", " ", 
+     "integers"}], ",", " ", 
+    RowBox[{
+    "the", " ", "translational", " ", "energy", " ", "is", " ", "constant", 
+     " ", 
+     RowBox[{"zero", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"energyBothInteger", " ", "=", " ", 
+    RowBox[{"FullSimplify", "[", "\n", "  ", 
+     RowBox[{
+      RowBox[{"energy60", " ", "/.", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"xi1", " ", "->", " ", "m"}], ",", " ", 
+         RowBox[{"xi2", " ", "->", " ", "n"}]}], "}"}]}], ",", "\n", "  ", 
+      RowBox[{"Assumptions", " ", "->", " ", 
+       RowBox[{
+        RowBox[{"Element", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"m", ",", " ", "n"}], "}"}], ",", " ", "Integers"}], "]"}],
+         " ", "&&", " ", 
+        RowBox[{"m", " ", ">", " ", "0"}], " ", "&&", " ", 
+        RowBox[{"n", " ", ">", " ", "0"}], " ", "&&", " ", 
+        RowBox[{"lam", " ", ">", " ", "0"}]}]}]}], "\n", "]"}]}], 
+   ";"}]}]], "Input",
+ CellLabel->"In[15]:=",ExpressionUUID->"0bf5df96-0375-4af8-b969-159bab11f848"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"<|", 
+  RowBox[{
+   RowBox[{"\"\<xi2 integer check\>\"", " ", "->", " ", "checkXi2Integer"}], 
+   ",", "\n", "  ", 
+   RowBox[{"\"\<xi1 integer check\>\"", " ", "->", " ", "checkXi1Integer"}], 
+   ",", "\n", "  ", 
+   RowBox[{
+   "\"\<both integer energy\>\"", " ", "->", " ", "energyBothInteger"}], ",", 
+   "\n", "  ", 
+   RowBox[{"\"\<direct integral E60\>\"", " ", "->", " ", "energy60"}]}], 
+  "|>"}]], "Input",
+ CellLabel->"In[16]:=",ExpressionUUID->"9f1ffeca-7e47-4bad-baff-2a93d608e621"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"xi2 integer check\"\>", "\[Rule]", "True"}], ",", 
+   RowBox[{"\<\"xi1 integer check\"\>", "\[Rule]", "True"}], ",", 
+   RowBox[{"\<\"both integer energy\"\>", "\[Rule]", "0"}], ",", 
+   RowBox[{"\<\"direct integral E60\"\>", "\[Rule]", 
+    RowBox[{
+     FractionBox["1", 
+      RowBox[{"4", " ", 
+       SuperscriptBox["\[Pi]", "2"]}]], 
+     RowBox[{
+      SqrtBox["3"], " ", "eta", " ", 
+      SuperscriptBox["lam", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"2", " ", "\[Pi]", " ", "xi2", " ", 
+         RowBox[{"Cos", "[", 
+          RowBox[{
+           FractionBox[
+            RowBox[{"4", " ", "dym", " ", "\[Pi]"}], 
+            RowBox[{
+             SqrtBox["3"], " ", "lam"}]], "+", 
+           RowBox[{"\[Pi]", " ", "xi1"}]}], "]"}], " ", 
+         RowBox[{"Sin", "[", 
+          RowBox[{"\[Pi]", " ", "xi1"}], "]"}]}], "+", 
+        RowBox[{
+         RowBox[{"Sin", "[", 
+          RowBox[{"\[Pi]", " ", "xi2"}], "]"}], " ", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"2", " ", "\[Pi]", " ", "xi1", " ", 
+            RowBox[{"Cos", "[", 
+             FractionBox[
+              RowBox[{"\[Pi]", " ", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"6", " ", "dxm"}], "-", 
+                 RowBox[{"2", " ", 
+                  SqrtBox["3"], " ", "dym"}], "+", 
+                 RowBox[{"3", " ", "lam", " ", "xi2"}]}], ")"}]}], 
+              RowBox[{"3", " ", "lam"}]], "]"}]}], "-", 
+           RowBox[{"Sin", "[", 
+            FractionBox[
+             RowBox[{"\[Pi]", " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"6", " ", "dxm"}], "+", 
+                RowBox[{"2", " ", 
+                 SqrtBox["3"], " ", "dym"}], "+", 
+                RowBox[{"3", " ", "lam", " ", "xi2"}]}], ")"}]}], 
+             RowBox[{"3", " ", "lam"}]], "]"}], "+", 
+           RowBox[{"Sin", "[", 
+            FractionBox[
+             RowBox[{"\[Pi]", " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"6", " ", "dxm"}], "+", 
+                RowBox[{"2", " ", 
+                 SqrtBox["3"], " ", "dym"}], "+", 
+                RowBox[{"6", " ", "lam", " ", "xi1"}], "+", 
+                RowBox[{"3", " ", "lam", " ", "xi2"}]}], ")"}]}], 
+             RowBox[{"3", " ", "lam"}]], "]"}]}], ")"}]}]}], ")"}]}]}]}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{3.9877164804105024`*^9, 3.987724418732623*^9},
+ CellLabel->"Out[16]=",ExpressionUUID->"64d74910-02f5-46e3-9afe-143c9a4045d8"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+Saveable->True,
+WindowSize->{792.75, 654.},
+WindowMargins->{{Automatic, 212.25}, {Automatic, 40.5}},
+WindowTitle->"02_parallelogram_energy.nb",
+FrontEndVersion->"13.0 for Microsoft Windows (64-bit) (December 2, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"8f243e09-be47-4d30-a1e9-2523ad0003ed"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[620, 23, 95, 0, 98, "Title",ExpressionUUID->"5bc2cc2a-35ef-4494-bc7e-cf9693b0293a"],
+Cell[718, 25, 238, 4, 58, "Text",ExpressionUUID->"c1f30cb0-c36c-49a1-a13b-336bd5d316cf"],
+Cell[959, 31, 326, 5, 81, "Text",ExpressionUUID->"73973a69-2373-4579-ad0b-1b334a8a1fb0"],
+Cell[CellGroupData[{
+Cell[1310, 40, 99, 0, 67, "Section",ExpressionUUID->"8ad143a1-6664-4fe9-99f1-c01286618c8f"],
+Cell[1412, 42, 314, 5, 81, "Text",ExpressionUUID->"f0ed3a9e-3df5-4cc2-a639-1a3e7ffe404c"],
+Cell[1729, 49, 1418, 36, 143, "Input",ExpressionUUID->"b9e71462-dfcc-4089-8c7f-dbf0e0a5ce2b"],
+Cell[3150, 87, 1139, 33, 86, "Input",ExpressionUUID->"e235069a-7bc2-4c67-9c67-f837e752d8fa"],
+Cell[4292, 122, 1120, 30, 105, "Input",ExpressionUUID->"c0ea16a9-32a4-4e07-af20-6e5947e1e70a"],
+Cell[5415, 154, 647, 15, 105, "Input",ExpressionUUID->"4f4df364-0795-46c0-b9c3-17fc74709919"],
+Cell[6065, 171, 1156, 27, 105, "Input",ExpressionUUID->"faeb4499-ab08-43e5-82ef-7b57a7d32592"],
+Cell[CellGroupData[{
+Cell[7246, 202, 1856, 46, 143, "Input",ExpressionUUID->"0aa91703-0fcf-4af6-81ea-768e5e1191be"],
+Cell[9105, 250, 588, 16, 60, "Output",ExpressionUUID->"f3c0338b-90b4-47e7-a1f4-0b8b52392e4d"]
+}, Open  ]],
+Cell[9708, 269, 690, 15, 86, "Input",ExpressionUUID->"9dc3f68f-7201-46d9-96da-4cdf36fa9012"],
+Cell[CellGroupData[{
+Cell[10423, 288, 1823, 47, 162, "Input",ExpressionUUID->"a05d099e-019c-4181-962f-b3dfa214c85e"],
+Cell[12249, 337, 665, 18, 60, "Output",ExpressionUUID->"be3b765f-65de-4898-9bee-6ffa6e4ba251"]
+}, Open  ]],
+Cell[12929, 358, 690, 15, 86, "Input",ExpressionUUID->"ff5496a4-68d4-4656-a30d-a255ec67ac2e"],
+Cell[13622, 375, 1190, 31, 105, "Input",ExpressionUUID->"0bf5df96-0375-4af8-b969-159bab11f848"],
+Cell[CellGroupData[{
+Cell[14837, 410, 519, 12, 86, "Input",ExpressionUUID->"9f1ffeca-7e47-4bad-baff-2a93d608e621"],
+Cell[15359, 424, 2613, 65, 213, "Output",ExpressionUUID->"64d74910-02f5-46e3-9afe-143c9a4045d8"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

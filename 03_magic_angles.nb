@@ -1,0 +1,370 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     12841,        362]
+NotebookOptionsPosition[     11207,        328]
+NotebookOutlinePosition[     11666,        346]
+CellTagsIndexPosition[     11623,        343]
+WindowTitle->03_magic_angles.nb
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["03 Magic Angles", "Title",ExpressionUUID->"3d2a2386-e982-4d61-b7b8-894a11bebfbd"],
+
+Cell["\<\
+This notebook derives the second-kind magic-angle rule from the sine \
+prefactors in the parallelogram energy.\
+\>", "Text",ExpressionUUID->"ba666467-fa7d-4382-88c9-fe4f17b68cc1"],
+
+Cell["\<\
+Reader map: the second-kind all-direction condition is obtained by forcing \
+the zeta1 sine phase to be an integer m. If xi1 is also an integer, the zeta2 \
+phase becomes m + xi1, so both sine prefactors vanish. This gives the \
+magic-angle condition used in the main text and SI Sec. VI.\
+\>", "Text",ExpressionUUID->"06988ef7-db03-4af4-99fb-2b8adae145b7"],
+
+Cell[CellGroupData[{
+
+Cell["Magic-Angle Condition", "Section",ExpressionUUID->"f42a4d48-60e1-431c-83d9-abfce9ec9614"],
+
+Cell["\<\
+The output reports Cot[phi_m], the two integer phases, the Boolean check that \
+both sine factors vanish, and representative angles in degrees matching the \
+values discussed in the paper.\
+\>", "Text",ExpressionUUID->"6a3574f3-07d3-4ccb-8968-e127f0f8f8ec"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "This", " ", "notebook", " ", "derives", " ", "the", " ", "magic"}], "-", 
+    RowBox[{
+    "angle", " ", "condition", " ", "from", " ", "the", " ", "sine", " ", 
+     RowBox[{"prefactors", "."}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"$Assumptions", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Element", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"xi1", ",", " ", "m"}], "}"}], ",", " ", "Integers"}], "]"}],
+       " ", "&&", " ", 
+      RowBox[{"xi1", " ", ">", " ", "0"}], " ", "&&", " ", 
+      RowBox[{"m", " ", ">", " ", "0"}]}]}], ";"}]}]}]], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"a1586bb3-b73d-4d3c-9720-0f31b70cef21"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"zeta1", "[", 
+   RowBox[{"phi_", ",", " ", "xi1_"}], "]"}], " ", ":=", " ", 
+  RowBox[{"4", " ", 
+   RowBox[{"Cos", "[", 
+    RowBox[{
+     RowBox[{"Pi", "/", "6"}], " ", "-", " ", "phi"}], "]"}], " ", 
+   RowBox[{"Sin", "[", "phi", "]"}]}]}], "\n", 
+ RowBox[{"  ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Sin", "[", 
+     RowBox[{"Pi", " ", "xi1", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "1"}], " ", "+", " ", 
+         RowBox[{
+          RowBox[{"Sqrt", "[", "3", "]"}], " ", 
+          RowBox[{"Cot", "[", "phi", "]"}]}]}], ")"}], "/", "2"}]}], "]"}], 
+    "/", 
+    RowBox[{"(", 
+     RowBox[{"Pi", " ", 
+      RowBox[{"(", 
+       RowBox[{"1", " ", "+", " ", 
+        RowBox[{"2", " ", 
+         RowBox[{"Cos", "[", 
+          RowBox[{"2", " ", "phi"}], "]"}]}]}], ")"}]}], ")"}]}], 
+   ";"}]}], "\n", 
+ RowBox[{
+  RowBox[{"zeta2", "[", 
+   RowBox[{"phi_", ",", " ", "xi1_"}], "]"}], " ", ":=", " ", 
+  RowBox[{"4", " ", 
+   RowBox[{"Cos", "[", 
+    RowBox[{
+     RowBox[{"Pi", "/", "6"}], " ", "+", " ", "phi"}], "]"}], " ", 
+   RowBox[{"Sin", "[", "phi", "]"}]}]}], "\n", 
+ RowBox[{"  ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Sin", "[", 
+     RowBox[{"Pi", " ", "xi1", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", " ", "+", " ", 
+         RowBox[{
+          RowBox[{"Sqrt", "[", "3", "]"}], " ", 
+          RowBox[{"Cot", "[", "phi", "]"}]}]}], ")"}], "/", "2"}]}], "]"}], 
+    "/", 
+    RowBox[{"(", 
+     RowBox[{"Pi", " ", 
+      RowBox[{"(", 
+       RowBox[{"1", " ", "+", " ", 
+        RowBox[{"2", " ", 
+         RowBox[{"Cos", "[", 
+          RowBox[{"2", " ", "phi"}], "]"}]}]}], ")"}]}], ")"}]}], 
+   ";"}]}]}], "Input",
+ CellLabel->"In[3]:=",ExpressionUUID->"1fc9475e-f501-4e4f-976e-f37df7fdb853"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"The", " ", "second"}], "-", 
+     RowBox[{"kind", " ", "all"}], "-", 
+     RowBox[{
+     "direction", " ", "condition", " ", "is", " ", "obtained", " ", "by", 
+      " ", "making", "\n", "   ", "the", " ", "zeta1", " ", "sine", " ", 
+      "phase", " ", "an", " ", "integer", " ", 
+      RowBox[{"m", ".", " ", "If"}], " ", "xi1", " ", "is", " ", "also", " ", 
+      "an", " ", "integer"}]}], ",", "\n", "   ", 
+    RowBox[{
+     RowBox[{"the", " ", "zeta2", " ", "phase", " ", "becomes", " ", "xi1"}], 
+     " ", "+", " ", 
+     RowBox[{"m", " ", "and", " ", "is", " ", "also", " ", "an", " ", 
+      RowBox[{"integer", "."}]}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"cotSolution", " ", "=", " ", 
+     RowBox[{"First", "[", 
+      RowBox[{"Solve", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"xi1", " ", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"-", "1"}], " ", "+", " ", 
+             RowBox[{
+              RowBox[{"Sqrt", "[", "3", "]"}], " ", "c"}]}], ")"}], "/", 
+           "2"}]}], " ", "==", " ", "m"}], ",", " ", "c"}], "]"}], "]"}]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"magicCot", " ", "=", " ", 
+     RowBox[{"FullSimplify", "[", 
+      RowBox[{"c", " ", "/.", " ", "cotSolution"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"magicRule", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Cot", "[", "phi", "]"}], " ", "->", " ", "magicCot"}]}], 
+    ";"}]}]}]], "Input",
+ CellLabel->"In[7]:=",ExpressionUUID->"f3f56191-d3cc-4d16-8ba1-626ede1aea97"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"phase1AtMagic", " ", "=", " ", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{
+     RowBox[{"xi1", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "1"}], " ", "+", " ", 
+         RowBox[{
+          RowBox[{"Sqrt", "[", "3", "]"}], " ", 
+          RowBox[{"Cot", "[", "phi", "]"}]}]}], ")"}], "/", "2"}]}], " ", "/.",
+      " ", "magicRule"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"phase2AtMagic", " ", "=", " ", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{
+     RowBox[{"xi1", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", " ", "+", " ", 
+         RowBox[{
+          RowBox[{"Sqrt", "[", "3", "]"}], " ", 
+          RowBox[{"Cot", "[", "phi", "]"}]}]}], ")"}], "/", "2"}]}], " ", "/.",
+      " ", "magicRule"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"checkSineZeros", " ", "=", " ", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Sin", "[", 
+        RowBox[{"Pi", " ", "phase1AtMagic"}], "]"}], ",", " ", 
+       RowBox[{"Sin", "[", 
+        RowBox[{"Pi", " ", "phase2AtMagic"}], "]"}]}], "}"}], " ", "==", " ", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", " ", "0"}], "}"}]}], "]"}]}], ";"}]}], "Input",
+ CellLabel->"In[10]:=",ExpressionUUID->"8ae47618-ba24-4ecc-8326-82e94748a746"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"phiMagic", "[", 
+    RowBox[{"m_", ",", " ", "xi1_"}], "]"}], " ", ":=", " ", 
+   RowBox[{"ArcCot", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"Sqrt", "[", "3", "]"}], "/", "3"}], ")"}], " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"2", " ", 
+        RowBox[{"m", "/", "xi1"}]}], " ", "+", " ", "1"}], ")"}]}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"exampleAnglesDegree", " ", "=", " ", 
+   RowBox[{"N", "[", "\n", "  ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"phiMagic", "[", 
+         RowBox[{"2", ",", " ", "1"}], "]"}], ",", " ", 
+        RowBox[{"phiMagic", "[", 
+         RowBox[{"3", ",", " ", "1"}], "]"}], ",", " ", 
+        RowBox[{"phiMagic", "[", 
+         RowBox[{"1", ",", " ", "2"}], "]"}], ",", " ", 
+        RowBox[{"phiMagic", "[", 
+         RowBox[{"3", ",", " ", "2"}], "]"}]}], "}"}], "/", "Degree"}], ",", 
+     "\n", "  ", "6"}], "\n", "]"}]}], ";"}]}], "Input",
+ CellLabel->"In[13]:=",ExpressionUUID->"290f064e-14bc-4eb4-a3d3-7fbd755ef7bb"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"First", "-", 
+    RowBox[{"kind", " ", "all"}], "-", 
+    RowBox[{"direction", " ", 
+     RowBox[{"frictionless", ":", " ", 
+      RowBox[{
+      "integer", " ", "xi1", " ", "and", " ", "xi2", " ", "remove", " ", 
+       "every", " ", "sine", " ", 
+       RowBox[{"prefactor", "."}]}]}]}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"firstKindSines", " ", "=", " ", 
+    RowBox[{"FullSimplify", "[", "\n", "  ", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Sin", "[", 
+         RowBox[{"Pi", " ", "n1"}], "]"}], ",", " ", 
+        RowBox[{"Sin", "[", 
+         RowBox[{"Pi", " ", "n2"}], "]"}]}], "}"}], ",", "\n", "  ", 
+      RowBox[{"Assumptions", " ", "->", " ", 
+       RowBox[{"Element", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"n1", ",", " ", "n2"}], "}"}], ",", " ", "Integers"}], 
+        "]"}]}]}], "\n", "]"}]}], ";"}]}]], "Input",
+ CellLabel->"In[15]:=",ExpressionUUID->"5b4361e3-c2ac-4b8e-be7d-638e13611ba2"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"<|", 
+  RowBox[{
+   RowBox[{"\"\<Cot[phi_m]\>\"", " ", "->", " ", "magicCot"}], ",", "\n", 
+   "  ", 
+   RowBox[{"\"\<phase 1 at magic\>\"", " ", "->", " ", "phase1AtMagic"}], ",",
+    "\n", "  ", 
+   RowBox[{"\"\<phase 2 at magic\>\"", " ", "->", " ", "phase2AtMagic"}], ",",
+    "\n", "  ", 
+   RowBox[{
+   "\"\<sine prefactors vanish\>\"", " ", "->", " ", "checkSineZeros"}], ",", 
+   "\n", "  ", 
+   RowBox[{
+   "\"\<example angles in degrees\>\"", " ", "->", " ", 
+    "exampleAnglesDegree"}], ",", "\n", "  ", 
+   RowBox[{
+   "\"\<first-kind sine factors\>\"", " ", "->", " ", "firstKindSines"}]}], 
+  "|>"}]], "Input",
+ CellLabel->"In[16]:=",ExpressionUUID->"b162e952-c9ab-4f55-a69e-f093bec6bcf7"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"Cot[phi_m]\"\>", "\[Rule]", 
+    FractionBox[
+     RowBox[{
+      RowBox[{"2", " ", "m"}], "+", "xi1"}], 
+     RowBox[{
+      SqrtBox["3"], " ", "xi1"}]]}], ",", 
+   RowBox[{"\<\"phase 1 at magic\"\>", "\[Rule]", "m"}], ",", 
+   RowBox[{"\<\"phase 2 at magic\"\>", "\[Rule]", 
+    RowBox[{"m", "+", "xi1"}]}], ",", 
+   RowBox[{"\<\"sine prefactors vanish\"\>", "\[Rule]", "True"}], ",", 
+   RowBox[{"\<\"example angles in degrees\"\>", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+     "19.1066053508690920344`6.", ",", "13.8978862480139829366`6.", ",", 
+      "40.8933946491309018467`6.", ",", "23.4132244463705351787`6."}], 
+     "}"}]}], ",", 
+   RowBox[{"\<\"first-kind sine factors\"\>", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "0"}], "}"}]}]}], "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{3.987716480481887*^9, 3.9877244441295223`*^9},
+ CellLabel->"Out[16]=",ExpressionUUID->"6cea287c-f8ab-4e22-be51-ba4aa8fbb25e"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+Saveable->True,
+WindowSize->{806.25, 654.},
+WindowMargins->{{198, Automatic}, {Automatic, 40.5}},
+WindowTitle->"03_magic_angles.nb",
+FrontEndVersion->"13.0 for Microsoft Windows (64-bit) (December 2, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"23d0ecc3-e2cb-4a75-a397-138a94c933fb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[612, 23, 87, 0, 98, "Title",ExpressionUUID->"3d2a2386-e982-4d61-b7b8-894a11bebfbd"],
+Cell[702, 25, 189, 3, 35, "Text",ExpressionUUID->"ba666467-fa7d-4382-88c9-fe4f17b68cc1"],
+Cell[894, 30, 367, 5, 81, "Text",ExpressionUUID->"06988ef7-db03-4af4-99fb-2b8adae145b7"],
+Cell[CellGroupData[{
+Cell[1286, 39, 95, 0, 67, "Section",ExpressionUUID->"f42a4d48-60e1-431c-83d9-abfce9ec9614"],
+Cell[1384, 41, 267, 4, 58, "Text",ExpressionUUID->"6a3574f3-07d3-4ccb-8968-e127f0f8f8ec"],
+Cell[1654, 47, 834, 22, 67, "Input",ExpressionUUID->"a1586bb3-b73d-4d3c-9720-0f31b70cef21"],
+Cell[2491, 71, 1805, 58, 86, "Input",ExpressionUUID->"1fc9475e-f501-4e4f-976e-f37df7fdb853"],
+Cell[4299, 131, 1634, 43, 124, "Input",ExpressionUUID->"f3f56191-d3cc-4d16-8ba1-626ede1aea97"],
+Cell[5936, 176, 1330, 38, 67, "Input",ExpressionUUID->"8ae47618-ba24-4ecc-8326-82e94748a746"],
+Cell[7269, 216, 1096, 31, 105, "Input",ExpressionUUID->"290f064e-14bc-4eb4-a3d3-7fbd755ef7bb"],
+Cell[8368, 249, 1027, 27, 105, "Input",ExpressionUUID->"5b4361e3-c2ac-4b8e-be7d-638e13611ba2"],
+Cell[CellGroupData[{
+Cell[9420, 280, 728, 18, 124, "Input",ExpressionUUID->"b162e952-c9ab-4f55-a69e-f093bec6bcf7"],
+Cell[10151, 300, 1016, 23, 126, "Output",ExpressionUUID->"6cea287c-f8ab-4e22-be51-ba4aa8fbb25e"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
